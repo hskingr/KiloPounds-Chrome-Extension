@@ -10,12 +10,16 @@ findMoney(document);
 
 //recursive function to list every dom node element and run a regex check on its textcontent
 function findMoney(node) {
-    //checks if there is any content and if there is a regex match
-    if (node.textContent != null && node.textContent.match(reg) != null) {
-        //looks for certain DOM elements
-        if (node.nodeName === "SPAN" || node.nodeName === "P" || node.nodeName === "A" ||
-            node.nodeName === "H1" || node.nodeName === "H2" || node.nodeName === "H3" || node.nodeName === "H4" ||
-            node.nodeName === "TD") {
+
+    //checks if there is any content and if there is a regex match and if there are no child nodes
+    if (node.textContent != null && node.textContent.match(reg) != null &&  node.childNodes.length === 1) {
+        //looks for child elements that are just text
+        if (node.childNodes[0].nodeName === "#text") {
+
+                // console.log(node.childNodes.length)
+                // console.log(node.childNodes[0].nodeName)
+                // console.log(node.textContent)
+
             const value = node.textContent.match(reg)
             //if multiple currency values exist, this will loop through the single element and change those instances
             value.forEach(originalValue => {
@@ -28,7 +32,7 @@ function findMoney(node) {
                 })
                 //replaces the instance
                 node.textContent = node.textContent.replace(originalValue, replacedValue)
-                console.log(node.textContent)
+                // console.log(node.textContent)
             })
         }
     }
@@ -50,7 +54,7 @@ function findMoney(node) {
 function convertToKilograms(input) {
     input = input.slice(1)
     input = input.replace(',', '')
-    console.log(parseInt(input))
+    // console.log(parseInt(input))
     return ((input / 2.2046).toFixed(2))
 }
 
